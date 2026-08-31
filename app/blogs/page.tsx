@@ -8,12 +8,8 @@ import { getBlogs } from "../services/blogs";
 
 const Blogs = async ({ searchParams }: { searchParams: Promise<{ filter?: string }> }) => {
   const { filter } = await searchParams;
-  const blogs = getBlogs();
-  const filterToLower = filter?.toLowerCase() ?? "";
-
-  const filteredBlogs = blogs.filter((blog) => blog.title.toLowerCase().includes(filterToLower));
-
-  const sortedBlogs = [...filteredBlogs].sort((a, b) => b.likes - a.likes);
+  const blogs = await getBlogs(filter);
+  const sortedBlogs = [...blogs].sort((a, b) => b.likes - a.likes);
 
   return (
     <div className="mx-auto w-full max-w-3xl space-y-6 px-6 py-8">
