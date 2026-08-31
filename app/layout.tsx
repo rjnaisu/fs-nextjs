@@ -33,6 +33,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Link href="/blogs/new" className="text-muted-foreground hover:text-foreground">
               New Blog
             </Link>
+            <Link href="/users" className="text-muted-foreground hover:text-foreground">
+              Users
+            </Link>
           </div>
         </nav>
         {children}

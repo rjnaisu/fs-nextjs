@@ -14,7 +14,15 @@ export const getBlogs = async (filter?: string) => {
 };
 
 export const addBlog = async (title: string, author: string, url: string) => {
-  return db.insert(blogs).values({ title, author, url });
+  const user = await db.query.users.findFirst({
+    orderBy: sql`RANDOM()`,
+  });
+
+  if (!user) {
+    throw new Error("Cannot create blog without a user");
+  }
+
+  return db.insert(blogs).values({ title, author, url, userId: user.id });
 };
 
 export const getBlogById = async (id: number) => {
