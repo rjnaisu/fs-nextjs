@@ -4,7 +4,7 @@ import "./globals.css";
 import Link from "next/link";
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
+  variable: "--font-sans",
   subsets: ["latin"],
 });
 
@@ -20,20 +20,22 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">
-        <nav>
-          <Link href='/'>Home</Link>
-          {" | "}
-          <Link href='/blogs'>Blogs</Link>
-          {" | "}
-          <Link href='blogs/new'>New Blog</Link>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+      <body className="flex min-h-full flex-col bg-background text-foreground">
+        <nav className="border-b">
+          <div className="mx-auto flex w-full max-w-3xl items-center gap-4 px-6 py-3 text-sm font-medium">
+            <Link href="/" className="text-muted-foreground hover:text-foreground">
+              Home
+            </Link>
+            <Link href="/blogs" className="text-muted-foreground hover:text-foreground">
+              Blogs
+            </Link>
+            <Link href="/blogs/new" className="text-muted-foreground hover:text-foreground">
+              New Blog
+            </Link>
+          </div>
         </nav>
         {children}
-
       </body>
     </html>
   );
