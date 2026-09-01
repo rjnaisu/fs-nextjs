@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Link from "next/link";
+import AuthSessionProvider from "@/components/SessionProvider";
+import NavBar from "@/components/NavBar";
 
 const geistSans = Geist({
   variable: "--font-sans",
@@ -22,23 +23,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col bg-background text-foreground">
-        <nav className="border-b">
-          <div className="mx-auto flex w-full max-w-3xl items-center gap-4 px-6 py-3 text-sm font-medium">
-            <Link href="/" className="text-muted-foreground hover:text-foreground">
-              Home
-            </Link>
-            <Link href="/blogs" className="text-muted-foreground hover:text-foreground">
-              Blogs
-            </Link>
-            <Link href="/blogs/new" className="text-muted-foreground hover:text-foreground">
-              New Blog
-            </Link>
-            <Link href="/users" className="text-muted-foreground hover:text-foreground">
-              Users
-            </Link>
-          </div>
-        </nav>
-        {children}
+        <AuthSessionProvider>
+          <NavBar />
+          {children}
+        </AuthSessionProvider>
       </body>
     </html>
   );

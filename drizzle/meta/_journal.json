@@ -8,6 +8,13 @@
       "when": 1788174002900,
       "tag": "0000_flowery_amazoness",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1788219118398,
+      "tag": "0001_legal_vampiro",
+      "breakpoints": true
     }
   ]
 }

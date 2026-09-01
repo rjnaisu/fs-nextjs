@@ -1,6 +1,7 @@
 import { db } from "../../db";
 import { eq, sql, ilike } from "drizzle-orm";
 import { blogs } from "../../db/schema";
+import { getCurrentUser } from "./session";
 
 export const getBlogs = async (filter?: string) => {
   const trimmedFilter = filter?.trim();
@@ -14,14 +15,10 @@ export const getBlogs = async (filter?: string) => {
 };
 
 export const addBlog = async (title: string, author: string, url: string) => {
-  const user = await db.query.users.findFirst({
-    orderBy: sql`RANDOM()`,
-  });
-
+  const user = await getCurrentUser();
   if (!user) {
     throw new Error("Cannot create blog without a user");
   }
-
   return db.insert(blogs).values({ title, author, url, userId: user.id });
 };
 
