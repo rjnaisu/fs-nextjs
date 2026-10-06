@@ -6,10 +6,12 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useNotification } from "@/components/NotificationContext";
 
 export default function LoginPage() {
   const router = useRouter();
   const [error, setError] = useState("");
+  const { showNotification } = useNotification();
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -24,6 +26,7 @@ export default function LoginPage() {
     if (result?.error) {
       setError("Invalid username or password");
     } else {
+      showNotification("Logged in successfully");
       router.push("/");
       router.refresh();
     }
@@ -32,7 +35,15 @@ export default function LoginPage() {
   return (
     <div className="mx-auto w-full max-w-3xl space-y-6 px-6 py-8">
       <h2 className="text-2xl font-semibold tracking-normal">Login</h2>
-      {error && <p className="text-sm font-medium text-destructive">{error}</p>}
+      {error && (
+        <p
+          data-testid="error-message"
+          role="alert"
+          className="text-sm font-medium text-destructive"
+        >
+          {error}
+        </p>
+      )}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <Label className="grid gap-2">
@@ -46,7 +57,9 @@ export default function LoginPage() {
             <Input type="password" name="password" required />
           </Label>
         </div>
-        <Button type="submit">Login</Button>
+        <Button data-testid="login-button" type="submit">
+          Login
+        </Button>
       </form>
     </div>
   );

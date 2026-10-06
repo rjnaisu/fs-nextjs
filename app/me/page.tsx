@@ -19,20 +19,40 @@ const MePage = async () => {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-8">
       <div className="space-y-6 rounded-xl border border-border/70 bg-card p-6 text-card-foreground sm:p-8">
-        <h1 className="text-2xl font-semibold tracking-normal">My Profile</h1>
-        <section aria-labelledby="profile-details-heading" className="space-y-3">
-          <p>Name: {user.name}</p>
-          <p className="text-muted-foreground">Username: {user.username}</p>
+        <h1 id="profile-details-heading" className="text-2xl font-semibold tracking-normal">
+          My Profile
+        </h1>
+        <section
+          data-testid="user-profile"
+          aria-labelledby="profile-details-heading"
+          className="space-y-3"
+        >
+          <p data-testid="user-name">Name: {user.name}</p>
+          <p data-testid="user-username" className="text-muted-foreground">
+            Username: {user.username}
+          </p>
         </section>
         <hr className="border-border/70" />
-        <section id="reading-list" aria-labelledby="reading-list-heading" className="space-y-6">
+        <section
+          data-testid="reading-list-section"
+          id="reading-list"
+          aria-labelledby="reading-list-heading"
+          className="space-y-6"
+        >
           <h2 id="reading-list-heading" className="text-lg font-semibold">
             Reading List
           </h2>
-          <div className="space-y-3">
+          {readingList.length === 0 && (
+            <p data-testid="empty-reading-list" className="text-sm text-muted-foreground">
+              Your reading list is empty.
+            </p>
+          )}
+          <div data-testid="unread-section" className="space-y-3">
             <h3 className="font-medium">Unread</h3>
             {unreadBlogs.length === 0 ? (
-              <p className="text-sm text-muted-foreground">No unread blogs.</p>
+              <p data-testid="no-unread-blogs" className="text-sm text-muted-foreground">
+                No unread blogs.
+              </p>
             ) : (
               <ul className="divide-y divide-border rounded-md border">
                 {unreadBlogs.map((blog) => (
@@ -77,13 +97,27 @@ const MePage = async () => {
           </div>
         </section>
         <hr className="border-border/70" />
-        <section aria-labelledby="api-token-heading" className="space-y-3">
+        <section
+          data-testid="api-token-section"
+          aria-labelledby="api-token-heading"
+          className="space-y-3"
+        >
           <h2 id="api-token-heading" className="text-lg font-semibold">
             API Token
           </h2>
-          <p className="break-all text-muted-foreground">{user.token ?? "You don't have any!"}</p>
+          {user.token ? (
+            <p data-testid="token-display" className="break-all text-muted-foreground">
+              <code data-testid="api-token">{user.token}</code>
+            </p>
+          ) : (
+            <p data-testid="no-token-message" className="text-muted-foreground">
+              You don&apos;t have any!
+            </p>
+          )}
           <form action={generateApiToken}>
-            <Button type="submit">Generate New Token</Button>
+            <Button data-testid="generate-token-button" type="submit">
+              Generate New Token
+            </Button>
           </form>
         </section>
       </div>

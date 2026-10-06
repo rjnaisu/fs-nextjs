@@ -16,7 +16,12 @@ export default function ReadingListButton({
   return (
     <form action={formAction} className="space-y-2">
       <input type="hidden" name="blogId" value={blogId} />
-      <Button type="submit" variant="outline" disabled={isSaved || isPending}>
+      <Button
+        data-testid="add-to-reading-list-button"
+        type="submit"
+        variant="outline"
+        disabled={isSaved || isPending}
+      >
         {isSaved ? "In your reading list" : isPending ? "Adding…" : "Add to reading list"}
       </Button>
       {state.error && (

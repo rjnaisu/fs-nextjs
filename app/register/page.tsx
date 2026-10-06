@@ -28,7 +28,9 @@ export default function RegisterPage() {
             />
           </Label>
           {state.errors.username && (
-            <p className="mt-2 text-sm font-medium text-destructive">{state.errors.username}</p>
+            <p data-testid="username-error" className="mt-2 text-sm font-medium text-destructive">
+              {state.errors.username}
+            </p>
           )}
         </div>
         <div>
@@ -61,12 +63,17 @@ export default function RegisterPage() {
             <Input type="password" name="passwordConfirm" required />
           </Label>
           {state.errors.passwordConfirm && (
-            <p className="mt-2 text-sm font-medium text-destructive">
+            <p
+              data-testid="passwordConfirm-error"
+              className="mt-2 text-sm font-medium text-destructive"
+            >
               {state.errors.passwordConfirm}
             </p>
           )}
         </div>
-        <Button type="submit">Register</Button>
+        <Button data-testid="register-button" type="submit">
+          Register
+        </Button>
       </form>
     </div>
   );

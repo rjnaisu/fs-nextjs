@@ -14,10 +14,20 @@ export default function NavBar() {
         <Link href="/" className="text-muted-foreground hover:text-foreground">
           Home
         </Link>
-        <Link href="/blogs" className="text-muted-foreground hover:text-foreground">
+        <Link
+          href="/blogs"
+          aria-label="blogs"
+          data-testid="nav-blogs"
+          className="text-muted-foreground hover:text-foreground"
+        >
           Blogs
         </Link>
-        <Link href="/users" className="text-muted-foreground hover:text-foreground">
+        <Link
+          href="/users"
+          aria-label="users"
+          data-testid="nav-users"
+          className="text-muted-foreground hover:text-foreground"
+        >
           Users
         </Link>
         {session ? (
@@ -25,7 +35,7 @@ export default function NavBar() {
             <Link href="/blogs/new" className="text-muted-foreground hover:text-foreground">
               New Blog
             </Link>
-            <Link href="/me" className="hover:text-foreground">
+            <Link href="/me" aria-label="me" data-testid="nav-me" className="hover:text-foreground">
               Me
             </Link>
             <Button type="button" variant="destructive" size="sm" onClick={() => signOut()}>
@@ -34,10 +44,20 @@ export default function NavBar() {
           </>
         ) : (
           <>
-            <Link href="/login" className="text-muted-foreground hover:text-foreground">
+            <Link
+              href="/login"
+              aria-label="login"
+              data-testid="nav-login"
+              className="text-muted-foreground hover:text-foreground"
+            >
               Login
             </Link>
-            <Link href="/register" className="text-muted-foreground hover:text-foreground">
+            <Link
+              href="/register"
+              aria-label="register"
+              data-testid="nav-register"
+              className="text-muted-foreground hover:text-foreground"
+            >
               Register
             </Link>
           </>

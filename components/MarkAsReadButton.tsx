@@ -10,7 +10,13 @@ export default function MarkAsReadButton({ blogId }: { blogId: number }) {
   return (
     <form action={formAction} className="shrink-0 space-y-2 text-right">
       <input type="hidden" name="blogId" value={blogId} />
-      <Button type="submit" variant="outline" size="sm" disabled={isPending}>
+      <Button
+        data-testid={`mark-read-${blogId}`}
+        type="submit"
+        variant="outline"
+        size="sm"
+        disabled={isPending}
+      >
         {isPending ? "Marking…" : "Mark as Read"}
       </Button>
       {state.error && (

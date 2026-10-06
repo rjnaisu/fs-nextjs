@@ -17,11 +17,16 @@ const Blogs = async ({ searchParams }: { searchParams: Promise<{ filter?: string
       <form action="/blogs" method="get" className="flex items-end gap-3">
         <Label className="grid flex-1 gap-2">
           Search:
-          <Input type="text" name="filter" defaultValue={filter ?? ""} />
+          <Input data-testid="filter-input" type="text" name="filter" defaultValue={filter ?? ""} />
         </Label>
-        <Button type="submit">Submit</Button>
+        <Button data-testid="search-button" type="submit">
+          Submit
+        </Button>
       </form>
-      <ul className="divide-y divide-foreground/10 rounded-md border border-foreground/10">
+      <ul
+        data-testid="blogs-list"
+        className="divide-y divide-foreground/10 rounded-md border border-foreground/10"
+      >
         {sortedBlogs.map((blog) => (
           <li key={blog.id} className="space-y-1 px-4 py-3 text-sm">
             <Link
@@ -32,7 +37,7 @@ const Blogs = async ({ searchParams }: { searchParams: Promise<{ filter?: string
             </Link>
             <p className="text-muted-foreground">{blog.author}</p>
             <p className="break-all text-muted-foreground">{blog.url}</p>
-            <p className="font-medium">Likes: {blog.likes}</p>
+            <p className="font-medium">{blog.likes} likes</p>
           </li>
         ))}
       </ul>

@@ -10,7 +10,10 @@ export default function Notification() {
   if (!message) return null;
 
   return (
-    <div className="fixed right-4 bottom-4 z-50 w-[calc(100vw-2rem)] max-w-sm">
+    <div
+      data-testid="notification"
+      className="fixed right-4 bottom-4 z-50 w-[calc(100vw-2rem)] max-w-sm"
+    >
       <Alert variant={type === "error" ? "destructive" : "default"}>
         {type === "error" ? <CircleAlertIcon /> : <CheckCircle2Icon />}
         <AlertTitle>{type === "error" ? "Error" : "Success"}</AlertTitle>

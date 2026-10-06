@@ -63,6 +63,7 @@ const NewBlog = () => {
             <Input
               type="text"
               name="url"
+              aria-label="URL"
               value={url}
               onChange={(event) => setUrl(event.target.value)}
               required
@@ -72,7 +73,9 @@ const NewBlog = () => {
             <p className="mt-2 text-sm font-medium text-destructive">{state.errors.url}</p>
           )}
         </div>
-        <Button type="submit">Create</Button>
+        <Button data-testid="create-blog-button" type="submit">
+          Create
+        </Button>
       </form>
     </div>
   );
