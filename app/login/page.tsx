@@ -1,6 +1,6 @@
 "use client";
 
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -11,24 +11,42 @@ import { useNotification } from "@/components/NotificationContext";
 export default function LoginPage() {
   const router = useRouter();
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { status } = useSession();
   const { showNotification } = useNotification();
+  // Session initialization and sign-in both set auth cookies. Let initialization
+  // finish first so its response cannot overwrite the sign-in CSRF cookie.
+  const isDisabled = status === "loading" || isSubmitting;
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (isDisabled) return;
     const formData = new FormData(e.currentTarget);
+    setError("");
+    setIsSubmitting(true);
 
-    const result = await signIn("credentials", {
-      username: formData.get("username"),
-      password: formData.get("password"),
-      redirect: false,
-    });
+    try {
+      const result = await signIn("credentials", {
+        username: formData.get("username"),
+        password: formData.get("password"),
+        redirect: false,
+      });
 
-    if (result?.error) {
-      setError("Invalid username or password");
-    } else {
-      showNotification("Logged in successfully");
-      router.push("/");
-      router.refresh();
+      if (result?.error) {
+        setError(
+          result.error === "CredentialsSignin"
+            ? "Invalid username or password"
+            : "Unable to sign in. Please try again.",
+        );
+      } else if (result?.ok) {
+        showNotification("Logged in successfully");
+        router.push("/");
+        router.refresh();
+      }
+    } catch {
+      setError("Unable to sign in. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -48,16 +66,16 @@ export default function LoginPage() {
         <div>
           <Label className="grid gap-2">
             Username
-            <Input type="text" name="username" required />
+            <Input type="text" name="username" disabled={isDisabled} required />
           </Label>
         </div>
         <div>
           <Label className="grid gap-2">
             Password
-            <Input type="password" name="password" required />
+            <Input type="password" name="password" disabled={isDisabled} required />
           </Label>
         </div>
-        <Button data-testid="login-button" type="submit">
+        <Button data-testid="login-button" type="submit" disabled={isDisabled}>
           Login
         </Button>
       </form>
