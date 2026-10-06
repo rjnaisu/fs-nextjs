@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import ApiTokenControls from "@/components/ApiTokenControls";
 import MarkAsReadButton from "@/components/MarkAsReadButton";
 import { getReadingList } from "@/app/services/reading-list";
 import { getCurrentUser } from "../services/session";
@@ -105,19 +105,8 @@ const MePage = async () => {
           <h2 id="api-token-heading" className="text-lg font-semibold">
             API Token
           </h2>
-          {user.token ? (
-            <p data-testid="token-display" className="break-all text-muted-foreground">
-              <code data-testid="api-token">{user.token}</code>
-            </p>
-          ) : (
-            <p data-testid="no-token-message" className="text-muted-foreground">
-              You don&apos;t have any!
-            </p>
-          )}
-          <form action={generateApiToken}>
-            <Button data-testid="generate-token-button" type="submit">
-              Generate New Token
-            </Button>
+          <form action={generateApiToken} className="space-y-3">
+            <ApiTokenControls token={user.token} />
           </form>
         </section>
       </div>
