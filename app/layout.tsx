@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AuthSessionProvider from "@/components/SessionProvider";
 import NavBar from "@/components/NavBar";
+import Notification from "@/components/Notification";
+import { NotificationProvider } from "@/components/NotificationContext";
 
 const geistSans = Geist({
   variable: "--font-sans",
@@ -21,11 +23,25 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      suppressHydrationWarning
+    >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var theme;try{theme=localStorage.getItem("theme")}catch(e){}document.documentElement.classList.toggle("dark",theme==="dark"||(theme!=="light"&&window.matchMedia("(prefers-color-scheme: dark)").matches))})()`,
+          }}
+        />
+      </head>
       <body className="flex min-h-full flex-col bg-background text-foreground">
         <AuthSessionProvider>
-          <NavBar />
-          {children}
+          <NotificationProvider>
+            <NavBar />
+            <Notification />
+            {children}
+          </NotificationProvider>
         </AuthSessionProvider>
       </body>
     </html>

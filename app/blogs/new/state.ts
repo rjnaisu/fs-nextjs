@@ -1,4 +1,5 @@
 export type CreateBlogState = {
+  success: boolean;
   errors: {
     title?: string;
     author?: string;
@@ -12,6 +13,7 @@ export type CreateBlogState = {
 };
 
 export const initialCreateBlogState: CreateBlogState = {
+  success: false,
   errors: {},
   values: {
     title: "",

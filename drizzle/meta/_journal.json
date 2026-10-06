@@ -15,6 +15,13 @@
       "when": 1788219118398,
       "tag": "0001_legal_vampiro",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1788243954984,
+      "tag": "0002_high_madelyne_pryor",
+      "breakpoints": true
     }
   ]
 }

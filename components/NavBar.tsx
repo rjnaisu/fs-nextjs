@@ -3,13 +3,14 @@
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function NavBar() {
   const { data: session } = useSession();
 
   return (
     <nav className="border-b">
-      <div className="mx-auto flex w-full max-w-3xl items-center gap-4 px-6 py-3 text-sm font-medium">
+      <div className="mx-auto flex w-full max-w-3xl flex-wrap items-center gap-4 px-6 py-3 text-sm font-medium">
         <Link href="/" className="text-muted-foreground hover:text-foreground">
           Home
         </Link>
@@ -24,8 +25,10 @@ export default function NavBar() {
             <Link href="/blogs/new" className="text-muted-foreground hover:text-foreground">
               New Blog
             </Link>
-            <em>{session.user?.name} logged in</em>
-            <Button type="button" variant="outline" size="sm" onClick={() => signOut()}>
+            <Link href="/me" className="hover:text-foreground">
+              Me
+            </Link>
+            <Button type="button" variant="destructive" size="sm" onClick={() => signOut()}>
               Logout
             </Button>
           </>
@@ -39,6 +42,7 @@ export default function NavBar() {
             </Link>
           </>
         )}
+        <ThemeToggle />
       </div>
     </nav>
   );

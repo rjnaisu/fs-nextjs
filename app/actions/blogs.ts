@@ -31,13 +31,13 @@ export const createBlog = async (
   }
 
   if (Object.keys(errors).length > 0) {
-    return { errors, values: { title, author, url } };
+    return { success: false, errors, values: { title, author, url } };
   }
 
   await addBlog(title, author, url);
 
   revalidatePath("/blogs");
-  redirect("/blogs");
+  return { success: true, errors: {}, values: { title, author, url } };
 };
 
 export const likeBlogAction = async (formData: FormData) => {

@@ -1,13 +1,27 @@
 "use client";
 import { createBlog } from "@/app/actions/blogs";
 import { initialCreateBlogState } from "@/app/blogs/new/state";
+import { useNotification } from "@/components/NotificationContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useActionState } from "react";
+import { useRouter } from "next/navigation";
+import { useActionState, useEffect, useState } from "react";
 
 const NewBlog = () => {
   const [state, formAction] = useActionState(createBlog, initialCreateBlogState);
+  const [title, setTitle] = useState(state.values.title);
+  const [author, setAuthor] = useState(state.values.author);
+  const [url, setUrl] = useState(state.values.url);
+  const { showNotification } = useNotification();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (state.success) {
+      showNotification("Blog created");
+      router.push("/blogs");
+    }
+  }, [router, showNotification, state.success]);
 
   return (
     <div className="mx-auto w-full max-w-3xl space-y-6 px-6 py-8">
@@ -16,7 +30,13 @@ const NewBlog = () => {
         <div>
           <Label className="grid gap-2">
             Title
-            <Input type="text" name="title" defaultValue={state.values?.title} required />
+            <Input
+              type="text"
+              name="title"
+              value={title}
+              onChange={(event) => setTitle(event.target.value)}
+              required
+            />
           </Label>
           {state.errors.title && (
             <p className="mt-2 text-sm font-medium text-destructive">{state.errors.title}</p>
@@ -25,7 +45,13 @@ const NewBlog = () => {
         <div>
           <Label className="grid gap-2">
             Author
-            <Input type="text" name="author" defaultValue={state.values?.author} required />
+            <Input
+              type="text"
+              name="author"
+              value={author}
+              onChange={(event) => setAuthor(event.target.value)}
+              required
+            />
           </Label>
           {state.errors.author && (
             <p className="mt-2 text-sm font-medium text-destructive">{state.errors.author}</p>
@@ -34,7 +60,13 @@ const NewBlog = () => {
         <div>
           <Label className="grid gap-2">
             Url
-            <Input type="text" name="url" defaultValue={state.values?.url} required />
+            <Input
+              type="text"
+              name="url"
+              value={url}
+              onChange={(event) => setUrl(event.target.value)}
+              required
+            />
           </Label>
           {state.errors.url && (
             <p className="mt-2 text-sm font-medium text-destructive">{state.errors.url}</p>

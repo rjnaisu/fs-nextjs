@@ -5,6 +5,19 @@ import { users } from "@/db/schema";
 import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
 import type { RegisterUserState } from "@/app/register/state";
+import { addApiToken } from "../services/users";
+import { getCurrentUser } from "../services/session";
+import { revalidatePath } from "next/cache";
+
+export const generateApiToken = async () => {
+  const user = await getCurrentUser();
+  if (!user) {
+    redirect("/login");
+  }
+  const token = crypto.randomUUID();
+  await addApiToken(user.id, token);
+  revalidatePath("/me");
+};
 
 export const registerUser = async (
   _prevState: RegisterUserState,
