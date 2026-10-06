@@ -1,6 +1,6 @@
 import { db } from "../../db";
 import { eq, sql, ilike } from "drizzle-orm";
-import { blogs } from "../../db/schema";
+import { blogs, readingList } from "../../db/schema";
 import { getCurrentUser } from "./session";
 
 export const getBlogs = async (filter?: string) => {
@@ -19,7 +19,28 @@ export const addBlog = async (title: string, author: string, url: string) => {
   if (!user) {
     throw new Error("Cannot create blog without a user");
   }
-  return db.insert(blogs).values({ title, author, url, userId: user.id });
+  // Both inserts run in one statement, so a failed reading-list insert rolls back the blog.
+  const createdBlog = db
+    .$with("created_blog")
+    .as(
+      db
+        .insert(blogs)
+        .values({ title, author, url, userId: user.id })
+        .returning({ id: blogs.id, userId: blogs.userId }),
+    );
+
+  return db
+    .with(createdBlog)
+    .insert(readingList)
+    .select(
+      db
+        .select({
+          userId: createdBlog.userId,
+          blogId: createdBlog.id,
+          read: sql<boolean>`false`.as("read"),
+        })
+        .from(createdBlog),
+    );
 };
 
 export const getBlogById = async (id: number) => {

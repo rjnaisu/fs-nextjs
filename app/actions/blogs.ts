@@ -37,6 +37,7 @@ export const createBlog = async (
   await addBlog(title, author, url);
 
   revalidatePath("/blogs");
+  revalidatePath("/me");
   return { success: true, errors: {}, values: { title, author, url } };
 };
 
@@ -45,4 +46,5 @@ export const likeBlogAction = async (formData: FormData) => {
   await likeBlog(id);
   revalidatePath(`/blogs/${id}`);
   revalidatePath("/blogs");
+  revalidatePath("/me");
 };
