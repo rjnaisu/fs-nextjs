@@ -1,9 +1,9 @@
 import { defineConfig } from "drizzle-kit";
 import * as dotenv from "dotenv";
 
-// Load .env.test in test environment, otherwise .env.local
-const envFile = process.env.NODE_ENV === "test" ? ".env.test" : ".env.local";
-dotenv.config({ path: envFile });
+// The workflow creates .env.test without exporting NODE_ENV to the process.
+const envFile = process.env.CI || process.env.NODE_ENV === "test" ? ".env.test" : ".env.local";
+dotenv.config({ path: envFile, quiet: true });
 
 export default defineConfig({
   schema: "./db/schema.ts",
